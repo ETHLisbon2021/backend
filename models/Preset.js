@@ -7,6 +7,7 @@ const PresetSchema = new Schema({
         required: true
     },
     name: String,
+    description: String,
     criteria: [
         String
     ]

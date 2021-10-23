@@ -25,9 +25,11 @@
     "ethers": "^5.5.1",
     "express": "^4.17.1",
     "http-errors": "^1.8.0",
+    "keccak256": "^1.0.3",
     "merkletreejs": "^0.2.24",
     "mongoose": "^6.0.12",
     "morgan": "^1.10.0",
-    "node-fetch": "^2.6.5"
+    "node-fetch": "^2.6.5",
+    "web3.storage": "^3.3.2"
   }
 }

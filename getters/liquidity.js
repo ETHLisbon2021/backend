@@ -1,17 +1,15 @@
 const fetch = require('node-fetch');
 
-const { AAVE_SUBGRAPH_ENDPOINT, CURVE_SUBGRAPH_ENDPOINT } = require("../constants");
+const {
+    AAVE_SUBGRAPH_ENDPOINT,
+    CURVE_SUBGRAPH_ENDPOINT,
+    UNISWAP_V2_SUBGRAPH_ENDPOINT,
+    UNISWAP_V3_SUBGRAPH_ENDPOINT,
+    MAKER_SUBGRAPH_ENDPOINT
+} = require("../constants");
 
-async function getAaveLiquidity(account) {
-    const query = `{
-      deposits(first: 1, where: {
-        user: "${account}"
-      }) {
-        id
-      }
-    }`;
-
-    const response = await fetch(AAVE_SUBGRAPH_ENDPOINT, {
+async function getSubgraphLiquidity(endpoint, query, fieldName) {
+    const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -22,8 +20,19 @@ async function getAaveLiquidity(account) {
         })
     });
     const result = await response.json();
+    const length = (result?.data ?? {})[fieldName]?.length ?? 0;
+    return length > 0;
+}
 
-    return (result?.data?.deposits?.length && result?.data?.deposits?.length > 0);
+async function getAaveLiquidity(account) {
+    const query = `{
+      deposits(first: 1, where: {
+        user: "${account}"
+      }) {
+        id
+      }
+    }`;
+    return await getSubgraphLiquidity(AAVE_SUBGRAPH_ENDPOINT, query, "deposits");
 }
 
 async function getCurveLiquidity(account) {
@@ -34,20 +43,32 @@ async function getCurveLiquidity(account) {
         id
       }
     }`;
+    return await getSubgraphLiquidity(CURVE_SUBGRAPH_ENDPOINT, query, "addLiquidityEvents");
+}
 
-    const response = await fetch(CURVE_SUBGRAPH_ENDPOINT, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-            query
-        })
-    });
-    const result = await response.json();
+async function getUniswapLiquidity(account) {
+    const query = `{
+      mints(first: 1, where: {
+        sender: "${account}"
+      }) {
+        id
+      }
+    }`;
+    const v2 = await getSubgraphLiquidity(UNISWAP_V2_SUBGRAPH_ENDPOINT, query, "mints");
+    const v3 = await getSubgraphLiquidity(UNISWAP_V3_SUBGRAPH_ENDPOINT, query, "mints");
+    return v2 || v3;
+    return false;
+}
 
-    return (result?.data?.addLiquidityEvents?.length && result?.data?.addLiquidityEvents?.length > 0);
+async function getMakerLiquidity(account) {
+    const query = `{
+      cdps(first: 1, where: {
+        owner: "${account}"
+      }) {
+        id
+      }
+    }`;
+    return await getSubgraphLiquidity(MAKER_SUBGRAPH_ENDPOINT, query, "cdps");
 }
 
 async function getLiquidityCriterion(criterion, account) {
@@ -58,6 +79,12 @@ async function getLiquidityCriterion(criterion, account) {
             break;
         case "CURVE":
             result = await getCurveLiquidity(account);
+            break;
+        case "UNISWAP":
+            result = await getUniswapLiquidity(account);
+            break;
+        case "MAKER":
+            result = await getMakerLiquidity(account);
             break;
         default:
             break;

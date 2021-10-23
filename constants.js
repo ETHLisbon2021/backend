@@ -31,11 +31,20 @@ const AAVE_SUBGRAPH_ENDPOINT = "https://api.thegraph.com/subgraphs/name/aave/pro
 
 const CURVE_SUBGRAPH_ENDPOINT = "https://api.thegraph.com/subgraphs/name/sistemico/curve";
 
+const UNISWAP_V2_SUBGRAPH_ENDPOINT = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2";
+
+const UNISWAP_V3_SUBGRAPH_ENDPOINT = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
+
+const MAKER_SUBGRAPH_ENDPOINT = "https://api.thegraph.com/subgraphs/name/protofire/makerdao";
+
 module.exports = {
     CRITERIA,
     GOVERNANCE_PROTOCOLS,
     LIQUIDITY_PROTOCOLS,
     POAP_SUBGRAPH_ENDPOINT,
     AAVE_SUBGRAPH_ENDPOINT,
-    CURVE_SUBGRAPH_ENDPOINT
+    CURVE_SUBGRAPH_ENDPOINT,
+    UNISWAP_V2_SUBGRAPH_ENDPOINT,
+    UNISWAP_V3_SUBGRAPH_ENDPOINT,
+    MAKER_SUBGRAPH_ENDPOINT
 };

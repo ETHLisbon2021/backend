@@ -2,12 +2,12 @@ const ethers = require("ethers");
 const BigNumber = ethers.BigNumber;
 const verifyMessage = ethers.utils.verifyMessage;
 const { MerkleTree } = require('merkletreejs');
-const SHA256 = require('crypto-js/sha256');
+const keccak256 = require('keccak256');
 
 const Sale = require("../models/Sale");
 const Preset = require("../models/Preset");
 const { getPreset } = require("../getters/preset");
-const { pinata } = require("../pinata");
+const { uploadToIPFS } = require("../ipfs");
 
 async function calculate(req, res) {
     let sale;
@@ -62,13 +62,24 @@ async function calculate(req, res) {
         }
         console.log("Calculated allocations");
 
-        const pin = await pinata.pinJSONToIPFS({
+        const hash = await uploadToIPFS({
             id: sale._id.toString(),
             users: sale.users
         });
-        console.log("Pinned calculation result to IPFS with hash", pin.IpfsHash);
+        console.log("Pinned calculation result to IPFS with hash", hash);
 
-        sale.ipfsHash = pin.IpfsHash;
+        const tree = new MerkleTree(sale.users.map(u => keccak256(u.address + u.allocation)));
+        const root = tree.getHexRoot();
+        console.log("Merkle root:", root);
+
+        const zeroData = sale.users[0].address + sale.users[0].allocation
+        console.log("Data:", zeroData);
+        const zeroLeaf = keccak256(zeroData);
+        console.log("Leaf:", zeroLeaf);
+        const proof = tree.getHexProof(zeroLeaf);
+        console.log("Proof:", proof);
+
+        sale.ipfsHash = hash;
         sale.calculated = true;
         await sale.save();
     });
