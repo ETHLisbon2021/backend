@@ -1,0 +1,33 @@
+{
+  "name": "lisbon-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ETHLisbon2021/backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ETHLisbon2021/backend/issues"
+  },
+  "homepage": "https://github.com/ETHLisbon2021/backend#readme",
+  "dependencies": {
+    "@pinata/sdk": "^1.1.23",
+    "async": "^3.2.1",
+    "cookie-parser": "^1.4.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^10.0.0",
+    "ethers": "^5.5.1",
+    "express": "^4.17.1",
+    "http-errors": "^1.8.0",
+    "merkletreejs": "^0.2.24",
+    "mongoose": "^6.0.12",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.6.5"
+  }
+}
