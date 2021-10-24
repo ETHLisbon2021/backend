@@ -7,7 +7,6 @@ const logger = require('morgan');
 const { calculate } = require("./handlers/calculate");
 const Sale = require("./models/Sale");
 const Preset = require("./models/Preset");
-const Criterion = require("./models/Criterion");
 
 function createApp(calculationQueue) {
     const app = express();
