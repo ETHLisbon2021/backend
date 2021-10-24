@@ -3,6 +3,7 @@ const { getERC20Criterion } = require("./erc20");
 const { getERC721Criterion } = require("./erc721");
 const { getPoapCriterion } = require("./poap");
 const { getLiquidityCriterion } = require("./liquidity");
+const { getGovernanceCriterion } = require("./governance");
 const { CRITERIA } = require("../constants");
 
 async function getCriterion(id, account) {
@@ -16,6 +17,8 @@ async function getCriterion(id, account) {
             return await getPoapCriterion(criterion, account);
         case CRITERIA.LIQUIDITY:
             return await getLiquidityCriterion(criterion, account);
+        case CRITERIA.GOVERNANCE:
+            return await getGovernanceCriterion(criterion, account);
         default:
             return 0;
     }

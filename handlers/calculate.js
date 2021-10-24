@@ -41,6 +41,7 @@ async function calculate(req, res) {
     }*/
 
     req.queue.push(async () => {
+        console.log("Going for calculation");
         sale.preset = req.body.preset;
 
         for (let i = 0; i < sale.users.length; i++) {

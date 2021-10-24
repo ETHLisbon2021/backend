@@ -37,6 +37,10 @@ const UNISWAP_V3_SUBGRAPH_ENDPOINT = "https://api.thegraph.com/subgraphs/name/un
 
 const MAKER_SUBGRAPH_ENDPOINT = "https://api.thegraph.com/subgraphs/name/protofire/makerdao";
 
+const AAVE_GOVERNANCE_SUBGRAPH_ENDPOINT = "https://api.thegraph.com/subgraphs/name/aave/governance-v2";
+
+const MAKER_GOVERNANCE_SUBGRAPH_ENDPOINT = "https://api.thegraph.com/subgraphs/name/protofire/makerdao-governance";
+
 module.exports = {
     CRITERIA,
     GOVERNANCE_PROTOCOLS,
@@ -46,5 +50,7 @@ module.exports = {
     CURVE_SUBGRAPH_ENDPOINT,
     UNISWAP_V2_SUBGRAPH_ENDPOINT,
     UNISWAP_V3_SUBGRAPH_ENDPOINT,
-    MAKER_SUBGRAPH_ENDPOINT
+    MAKER_SUBGRAPH_ENDPOINT,
+    AAVE_GOVERNANCE_SUBGRAPH_ENDPOINT,
+    MAKER_GOVERNANCE_SUBGRAPH_ENDPOINT
 };

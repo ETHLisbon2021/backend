@@ -19,6 +19,7 @@ eligible.on("SaleInitiated", handleSale);
 eligible.on("Deposited", handleDeposit);
 
 const calculationQueue = queue((task, callback) => {
+    console.log("Task");
     task().then(callback);
 })
 
