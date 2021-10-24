@@ -6,7 +6,6 @@ const Sale = require("../models/Sale");
 const Preset = require("../models/Preset");
 const { getPreset } = require("../getters/preset");
 const { uploadToIPFS } = require("../ipfs");
-const { eligible } = require("../contracts");
 
 async function calculate(req, res) {
     let sale;
@@ -34,11 +33,6 @@ async function calculate(req, res) {
         res.sendStatus(403);
         return;
     }
-
-    /*if (sale.calculated) {
-        res.sendStatus(400);
-        return;
-    }*/
 
     req.queue.push(async () => {
         console.log("Going for calculation");
@@ -68,15 +62,6 @@ async function calculate(req, res) {
         });
         console.log("Pinned calculation result to IPFS with hash", hash);
         sale.ipfsHash = hash;
-
-        const addresses = sale.users.map(u => u.address);
-        const allocations = sale.users.map(u => u.allocation);
-        await eligible.distribute(
-            sale.saleId,
-            addresses,
-            allocations
-        );
-        console.log("Distributed allocations for users");
 
         sale.calculated = true;
         await sale.save();
