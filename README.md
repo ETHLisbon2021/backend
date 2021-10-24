@@ -100,3 +100,19 @@ Request: request object with the following fields:
 
 Response: 200 response for successful request (if calculation was accepted, 
 response should be obtained separately through `/sale/:id` endpoint`)
+
+## Project Architecture
+
+This project uses Express.js as web framework and Mongodb as database (via Mongoose).
+Also ethers is used for interaction with smart contracts and async tasks queues for calculating allocations.
+
+Project structure consists of following parts:
+* `abi` - folder with smart contracts ABI
+* `getters` - criteria and preset getters functions
+* `handlers` - event and http request handlers
+* `models` - mongoose models
+* `app.js` - main express.js web app file
+* `constant.js` - file with various constants
+* `contracts.js` - file with provider and contract instances
+* `ipfs.js` - file with IPFS storing function 
+* `index.js` - application entry point file
