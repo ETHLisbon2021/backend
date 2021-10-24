@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 const { calculate } = require("./handlers/calculate");
 const Sale = require("./models/Sale");
@@ -11,6 +12,8 @@ const { getPreset } = require("./getters/preset");
 
 function createApp(calculationQueue) {
     const app = express();
+
+    app.options('*', cors());
 
     app.use(logger('dev'));
     app.use(express.json());
