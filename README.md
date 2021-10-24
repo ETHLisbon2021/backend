@@ -101,6 +101,19 @@ Request: request object with the following fields:
 Response: 200 response for successful request (if calculation was accepted, 
 response should be obtained separately through `/sale/:id` endpoint`)
 
+### Get score
+
+Endpoint: `/score`
+
+Method: GET
+
+Request: following params are accepted:
+* `preset` - ID of the preset to get score for
+* `address` - address to get score for
+
+Response: object with following fields:
+* `score` - score of the given address for given preset
+
 ## Project Architecture
 
 This project uses Express.js as web framework and Mongodb as database (via Mongoose).
