@@ -7,6 +7,7 @@ const logger = require('morgan');
 const { calculate } = require("./handlers/calculate");
 const Sale = require("./models/Sale");
 const Preset = require("./models/Preset");
+const { getPreset } = require("./getters/preset");
 
 function createApp(calculationQueue) {
     const app = express();
@@ -48,6 +49,13 @@ function createApp(calculationQueue) {
         res.json(sales.map(s => ({
             saleId: s.saleId
         })))
+    });
+
+    app.get("/score", async (req, res) => {
+        const score = await getPreset(req.query.preset, req.query.address);
+        res.json({
+            score
+        });
     });
 
     // catch 404 and forward to error handler
