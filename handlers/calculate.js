@@ -1,13 +1,12 @@
 const ethers = require("ethers");
 const BigNumber = ethers.BigNumber;
 const verifyMessage = ethers.utils.verifyMessage;
-const { MerkleTree } = require('merkletreejs');
-const keccak256 = require('keccak256');
 
 const Sale = require("../models/Sale");
 const Preset = require("../models/Preset");
 const { getPreset } = require("../getters/preset");
 const { uploadToIPFS } = require("../ipfs");
+const { eligible } = require("../contracts");
 
 async function calculate(req, res) {
     let sale;
@@ -67,19 +66,17 @@ async function calculate(req, res) {
             users: sale.users
         });
         console.log("Pinned calculation result to IPFS with hash", hash);
-
-        const tree = new MerkleTree(sale.users.map(u => keccak256(u.address + u.allocation)));
-        const root = tree.getHexRoot();
-        console.log("Merkle root:", root);
-
-        const zeroData = sale.users[0].address + sale.users[0].allocation
-        console.log("Data:", zeroData);
-        const zeroLeaf = keccak256(zeroData);
-        console.log("Leaf:", zeroLeaf);
-        const proof = tree.getHexProof(zeroLeaf);
-        console.log("Proof:", proof);
-
         sale.ipfsHash = hash;
+
+        const addresses = sale.users.map(u => u.address);
+        const allocations = sale.users.map(u => u.allocation);
+        await eligible.distribute(
+            sale.saleId,
+            addresses,
+            allocations
+        );
+        console.log("Distributed allocations for users");
+
         sale.calculated = true;
         await sale.save();
     });
