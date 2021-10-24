@@ -13,7 +13,7 @@ const { getPreset } = require("./getters/preset");
 function createApp(calculationQueue) {
     const app = express();
 
-    app.options('*', cors());
+    app.use(cors());
 
     app.use(logger('dev'));
     app.use(express.json());
